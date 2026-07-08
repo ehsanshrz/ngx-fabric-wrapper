@@ -2,18 +2,17 @@
   "name": "ngx-fabric-wrapper",
   "description": "Angular wrapper library for Fabric",
   "bugs": "https://github.com/zefoy/ngx-fabric-wrapper/issues",
-  "version": "12.0.0",
+  "version": "17.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/zefoy/ngx-fabric-wrapper.git"
   },
   "dependencies": {
-    "fabric": "^4.2.0",
-    "resize-observer-polyfill": "^1.5.0"
+    "fabric": "^7.4.0"
   },
   "peerDependencies": {
-    "@angular/common": ">=9.0.0",
-    "@angular/core": ">=9.0.0"
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0"
   }
 }

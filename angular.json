@@ -14,17 +14,17 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/app",
             "index": "projects/app/src/index.html",
-            "main": "projects/app/src/main.ts",
-            "polyfills": "projects/app/src/polyfills.ts",
+            "browser": "projects/app/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/app/tsconfig.json",
-            "aot": true,
             "assets": [
-              "projects/app/src/favicon.ico",
-              "projects/app/src/assets"
+              "projects/app/src/favicon.ico"
             ],
             "styles": [
               "projects/app/src/styles.css"
@@ -42,10 +42,7 @@
               "optimization": true,
               "outputHashing": "none",
               "sourceMap": false,
-              "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -64,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build"
+            "buildTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "app:build:production"
+              "buildTarget": "app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "app:build"
+            "buildTarget": "app:build"
           }
         },
         "lint": {
@@ -96,7 +93,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "projects/lib/tsconfig.json",
             "project": "projects/lib/ng-package.json"
@@ -117,6 +114,5 @@
         }
       }
     }
-  },
-  "defaultProject": "lib"
+  }
 }

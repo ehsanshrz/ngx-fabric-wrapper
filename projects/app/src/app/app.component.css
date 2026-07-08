@@ -7,6 +7,8 @@
 }
 
 .box-container {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 800px;
   height: 500px;
@@ -29,20 +31,40 @@
   line-height: 24px;
 }
 
+.horizontal-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.vertical-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.left-panel {
+  flex: 0 0 50%;
+}
+
+.right-panel {
+  flex: 0 0 50%;
+}
+
 .action-container {
   overflow: auto;
   padding: 16px;
+  flex: 1 1 auto;
 }
 
 .content-container {
   overflow: visible;
+  flex: 1 1 auto;
+  position: relative;
 }
 
 .action-container,
 .content-container {
-  position: relative;
-
-  height: 300px;
   min-height: 0;
   margin: 8px 16px;
   border-radius: 4px;
@@ -50,7 +72,20 @@
   background-color: #fff;
 }
 
+.fabric-fill {
+  flex: 1 1 auto;
+  display: block;
+}
+
+.canvas-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 .action-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   box-sizing: border-box;
   width: calc(100% - 16px);
   min-height: 35px;
@@ -71,6 +106,14 @@
   background-color: #555;
 }
 
-.quill-editor {
-  display: flex;
+@media (max-width: 599px) {
+  .horizontal-container {
+    flex-direction: column;
+    min-height: 800px;
+  }
+
+  .left-panel,
+  .right-panel {
+    flex: 0 0 auto;
+  }
 }

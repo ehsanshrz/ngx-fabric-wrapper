@@ -1,6 +1,4 @@
-import { fabric } from 'fabric';
-
-import ResizeObserver from 'resize-observer-polyfill';
+import { Canvas, StaticCanvas } from 'fabric';
 
 import { Directive, Optional, Inject,
   OnInit, OnDestroy, DoCheck, OnChanges,
@@ -12,10 +10,11 @@ import { FABRIC_CONFIG, FabricConfig, FabricConfigInterface,
 
 @Directive({
   selector: '[fabric]',
-  exportAs: 'ngxFabric'
+  exportAs: 'ngxFabric',
+  standalone: true
 })
 export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
-  private instance: fabric.Canvas | fabric.StaticCanvas | null = null;
+  private instance: Canvas | StaticCanvas | null = null;
 
   private ro: ResizeObserver | null = null;
 
@@ -28,17 +27,23 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
   private configDiff: KeyValueDiffer<string, any> | null = null;
 
   @Input()
-  set zoom(zoom: number) {
-    this.setZoom(zoom);
+  set zoom(zoom: number | null) {
+    if (zoom !== null) {
+      this.setZoom(zoom);
+    }
   }
 
   @Input()
-  set width(width: number) {
-    this.setWidth(width);
+  set width(width: number | null) {
+    if (width !== null) {
+      this.setWidth(width);
+    }
   }
   @Input()
-  set height(height: number) {
-    this.setHeight(height);
+  set height(height: number | null) {
+    if (height !== null) {
+      this.setHeight(height);
+    }
   }
 
   @Input() disabled: boolean = false;
@@ -106,9 +111,9 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
 
     this.zone.runOutsideAngular(() => {
       if (!this.disabled) {
-        this.instance = new fabric.Canvas(this.elementRef.nativeElement, params);
+        this.instance = new Canvas(this.elementRef.nativeElement, params as any);
       } else {
-        this.instance = new fabric.StaticCanvas(this.elementRef.nativeElement, params);
+        this.instance = new StaticCanvas(this.elementRef.nativeElement, params as any);
       }
 
       if (this.initialZoom) {
@@ -133,7 +138,7 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
       const fabricEvent = eventName.replace(/([A-Z])/g, (c) => `:${c.toLowerCase()}`);
 
       if (this.instance) {
-        this.instance.on(fabricEvent, (event: any) => {
+        this.instance.on(fabricEvent as any, (event: any) => {
           this.zone.run(() => {
             if (this[eventName].observers.length) {
               this[eventName].emit(event);
@@ -150,7 +155,7 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
     }
 
     this.zone.runOutsideAngular(() => {
-      this.ro = new ResizeObserver((entries, observer) => {
+      this.ro = new ResizeObserver(() => {
         const element = this.elementRef.nativeElement.parentElement.parentElement;
 
         if (!this.initialWidth) {
@@ -175,8 +180,6 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
       this.objectsJSON = this.instance.toObject();
 
       this.instance.dispose();
-
-      delete this.instance;
 
       this.instance = null;
     }
@@ -232,7 +235,7 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
     this.initialWidth = width;
 
     if (this.instance) {
-      this.instance.setWidth(width);
+      this.instance.setDimensions({ width });
     }
   }
 
@@ -240,23 +243,17 @@ export class FabricDirective implements OnInit, OnDestroy, DoCheck, OnChanges {
     this.initialHeight = height;
 
     if (this.instance) {
-      this.instance.setHeight(height);
+      this.instance.setDimensions({ height });
     }
   }
 
-  public loadFromJSON(json: any, callback?: Function, reviverOpt?: any): void {
+  public loadFromJSON(json: any, reviver?: (klass: any, object: any) => any): void {
     if (this.instance) {
-      this.instance.loadFromJSON(json, () => {
-        let renderAll = true;
-
-        if (callback) {
-          renderAll = callback();
-        }
-
-        if (renderAll && this.instance) {
+      this.instance.loadFromJSON(json, reviver).then(() => {
+        if (this.instance) {
           this.instance.renderAll();
         }
-      }, reviverOpt);
+      });
     }
   }
 }

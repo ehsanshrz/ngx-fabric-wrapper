@@ -65,15 +65,11 @@ export const FabricEvents: FabricEvent[] = [
 
 export interface FabricConfigInterface {
   allowTouchScrolling?: boolean,
-  altActionKey?: string,
-  altSelectionKey?: string,
   backgroundColor?: string | any,
   backgroundImage?: any,
   backgroundVpt?: boolean,
-  centeredKey?: string,
   centeredRotation?: boolean,
   centeredScaling?: boolean,
-  clipTo?: FabricClipToFunction,
   containerClass?: string,
   controlsAboveOverlay?: boolean,
   defaultCursor?: string,
@@ -100,33 +96,27 @@ export interface FabricConfigInterface {
   selectionBorderColor?: string,
   selectionColor?: string,
   selectionDashArray?: any[],
-  selectionKey?: string,
+  selectionKey?: string | string[],
   selectionLineWidth?: number,
   skipOffscreen?: boolean,
   skipTargetFind?: boolean,
   snapAngle?: number,
   snapThreshold?: number,
-  stateful?: boolean,
   stopContextMenu?: boolean,
-  svgViewportTransformation?: boolean,
-  targetFindToTolerance?: number,
+  targetFindTolerance?: number,
   uniScaleKey?: string,
-  uniScaleTransform?: boolean,
-  viewportTransform?: any[],
+  uniformScaling?: boolean,
+  viewportTransform?: number[],
   vptCoords?: any
 }
 
 export class FabricConfig implements FabricConfigInterface {
   allowTouchScrolling?: boolean;
-  altActionKey?: string;
-  altSelectionKey?: string;
   backgroundColor?: string | any;
   backgroundImage?: any;
   backgroundVpt?: boolean;
-  centeredKey?: string;
   centeredRotation?: boolean;
   centeredScaling?: boolean;
-  clipTo?: FabricClipToFunction;
   containerClass?: string;
   controlsAboveOverlay?: boolean;
   defaultCursor?: string;
@@ -142,8 +132,8 @@ export class FabricConfig implements FabricConfigInterface {
   isDrawingMode?: boolean;
   moveCursor?: string;
   notAllowedCursor?: string;
-  overlayColor: string | any;
-  overlayImage: any;
+  overlayColor?: string | any;
+  overlayImage?: any;
   overlayVpt?: boolean;
   perPixelTargetFind?: boolean;
   preserveObjectStacking?: boolean;
@@ -153,19 +143,17 @@ export class FabricConfig implements FabricConfigInterface {
   selectionBorderColor?: string;
   selectionColor?: string;
   selectionDashArray?: any[];
-  selectionKey?: string;
+  selectionKey?: string | string[];
   selectionLineWidth?: number;
   skipOffscreen?: boolean;
   skipTargetFind?: boolean;
   snapAngle?: number;
   snapThreshold?: number;
-  stateful?: boolean;
   stopContextMenu?: boolean;
-  svgViewportTransformation?: boolean;
-  targetFindToTolerance?: number;
+  targetFindTolerance?: number;
   uniScaleKey?: string;
-  uniScaleTransform?: boolean;
-  viewportTransform?: any[];
+  uniformScaling?: boolean;
+  viewportTransform?: number[];
   vptCoords?: any;
 
   constructor(config: FabricConfigInterface = {}) {
@@ -178,5 +166,3 @@ export class FabricConfig implements FabricConfigInterface {
     }
   }
 }
-
-export type FabricClipToFunction = (ctx: any) => void;

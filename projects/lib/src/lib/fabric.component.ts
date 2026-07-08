@@ -11,7 +11,9 @@ import { FabricConfigInterface } from './fabric.interfaces';
   exportAs: 'ngxFabric',
   templateUrl: './fabric.component.html',
   styleUrls: [ './fabric.component.css' ],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [ FabricDirective ]
 })
 export class FabricComponent implements AfterViewInit {
   private json: any = null;
@@ -98,11 +100,11 @@ export class FabricComponent implements AfterViewInit {
   private setJSON(json: string, force?: boolean): void {
     if (force || json !== this.json) {
       if (this.directiveRef) {
-        this.directiveRef.loadFromJSON(json, () => {
-          if (this.directiveRef && this.directiveRef.fabric()) {
-            this.dataLoaded.emit(this.directiveRef.fabric());
-          }
-        });
+        this.directiveRef.loadFromJSON(json, undefined);
+
+        if (this.directiveRef && this.directiveRef.fabric()) {
+          this.dataLoaded.emit(this.directiveRef.fabric());
+        }
       }
 
       this.json = json;

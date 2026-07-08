@@ -1,4 +1,4 @@
-import { fabric } from 'fabric';
+import { Canvas, Line, Text, FabricImage } from 'fabric';
 
 import { Component, ViewChild } from '@angular/core';
 
@@ -6,9 +6,9 @@ import { FabricComponent, FabricDirective, FabricConfigInterface } from 'ngx-fab
 
 @Component({
   selector: 'my-app',
-  moduleId: 'src/app/app.component',
   templateUrl: 'app.component.html',
-  styleUrls: [ 'app.component.css' ]
+  styleUrls: [ 'app.component.css' ],
+  standalone: false
 })
 export class AppComponent {
   public show: boolean = true;
@@ -62,7 +62,7 @@ export class AppComponent {
   }
 
   public addLine(): void {
-    const line = new fabric.Line([
+    const line = new Line([
       44, 100, 300, 100
     ], {
       fill: '#000000',
@@ -71,36 +71,36 @@ export class AppComponent {
     });
 
     if (this.type === 'directive' && this.directiveRef) {
-      this.directiveRef.fabric().add(line);
+      (this.directiveRef.fabric() as Canvas).add(line);
     } else if (this.type === 'component' && this.componentRef && this.componentRef.directiveRef) {
-      this.componentRef.directiveRef.fabric().add(line);
+      (this.componentRef.directiveRef.fabric() as Canvas).add(line);
     }
   }
 
   public addText(): void {
-    const text = new fabric.Text('Angular', {
+    const text = new Text('Angular', {
       top: 120,
       left: 105,
       fill: '#000000'
     });
 
     if (this.type === 'directive' && this.directiveRef) {
-      this.directiveRef.fabric().add(text);
+      (this.directiveRef.fabric() as Canvas).add(text);
     } else if (this.type === 'component' && this.componentRef && this.componentRef.directiveRef) {
-      this.componentRef.directiveRef.fabric().add(text);
+      (this.componentRef.directiveRef.fabric() as Canvas).add(text);
     }
   }
 
   public addImage(): void {
-    fabric.Image.fromURL('https://angular.io/assets/images/logos/angular/angular.png', (image) => {
+    FabricImage.fromURL('https://angular.io/assets/images/logos/angular/angular.png').then((image) => {
       image.scale(0.5);
 
       image.set({ left: 110, top: 180 });
 
       if (this.type === 'directive' && this.directiveRef) {
-        this.directiveRef.fabric().add(image);
+        (this.directiveRef.fabric() as Canvas).add(image);
       } else if (this.type === 'component' && this.componentRef && this.componentRef.directiveRef) {
-        this.componentRef.directiveRef.fabric().add(image);
+        (this.componentRef.directiveRef.fabric() as Canvas).add(image);
       }
     });
   }
