@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "sourceMap": true,
     "declaration": false,
+    "ignoreDeprecations": "6.0",
     "skipLibCheck": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
